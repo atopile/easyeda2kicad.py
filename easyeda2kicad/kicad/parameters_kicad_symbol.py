@@ -678,7 +678,7 @@ class KiSymbol:
         sym_info = sym_export_data.pop("info")
         if len(self.units) > 1:
             print("multiple units not supported for v5, only the first will be exported")
-        sym_graphic_items = itertools.chain.from_iterable(self.units[0].export_handler(kicad_version="5"))
+        sym_graphic_items = itertools.chain.from_iterable(self.units[0].export_handler(kicad_version="5").values())
 
         return (
             "#\n#"
