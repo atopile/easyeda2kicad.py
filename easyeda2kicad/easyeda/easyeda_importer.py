@@ -92,6 +92,11 @@ def add_easyeda_arc(arc_data: str, ee_symbol: EeSymbol):
     )
 
 
+def add_easyeda_text(text_data: str, ee_symbol: EeSymbol):
+    # TODO: implement
+    pass
+
+
 easyeda_handlers = {
     "P": add_easyeda_pin,
     "R": add_easyeda_rectangle,
@@ -101,6 +106,7 @@ easyeda_handlers = {
     "PL": add_easyeda_polyline,
     "PG": add_easyeda_polygon,
     "PT": add_easyeda_path,
+    "T": add_easyeda_text,
     # "PI" : Pie, Elliptical arc seems to be not supported in Kicad
 }
 
