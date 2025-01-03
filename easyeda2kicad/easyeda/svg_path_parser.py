@@ -25,8 +25,7 @@ class SvgPathEllipticalArc(BaseModel):
     end_y: float
 
 
-class SvgPathClosePath(BaseModel):
-    ...
+class SvgPathClosePath(BaseModel): ...
 
 
 svg_path_handlers = {
