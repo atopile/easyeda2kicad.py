@@ -40,7 +40,6 @@ def px_to_mm(dim: Union[int, float]) -> float:
 def convert_ee_pins(
     ee_pins: List[EeSymbolPin], ee_bbox: EeSymbolBbox, kicad_version: KicadVersion
 ) -> List[KiSymbolPin]:
-
     to_ki: Callable = px_to_mil if kicad_version == KicadVersion.v5 else px_to_mm
     # pin_spacing = (
     #     KiExportConfigV5.PIN_SPACING.value
@@ -90,7 +89,6 @@ def convert_ee_rectangles(
     ee_bbox: EeSymbolBbox,
     kicad_version: KicadVersion,
 ) -> List[KiSymbolRectangle]:
-
     to_ki: Callable = px_to_mil if kicad_version == KicadVersion.v5 else px_to_mm
 
     kicad_rectangles = []
@@ -208,7 +206,6 @@ def convert_ee_polylines(
     ee_bbox: EeSymbolBbox,
     kicad_version: KicadVersion,
 ) -> List[KiSymbolPolygon]:
-
     to_ki: Callable = px_to_mil if kicad_version == KicadVersion.v5 else px_to_mm
     kicad_polygons = []
     for ee_polyline in ee_polylines:
@@ -301,7 +298,6 @@ def convert_ee_paths(
 
 
 def convert_to_kicad(ee_symbol: EeSymbol, kicad_version: KicadVersion) -> KiSymbol:
-
     ki_info = KiSymbolInfo(
         name=ee_symbol.info.name,
         prefix=ee_symbol.info.prefix.replace("?", ""),
@@ -373,7 +369,6 @@ class ExporterSymbolKicad:
         )
 
     def export(self, footprint_lib_name: str) -> str:
-
         tune_footprint_ref_path(
             ki_symbol=self.output,
             footprint_lib_name=footprint_lib_name,

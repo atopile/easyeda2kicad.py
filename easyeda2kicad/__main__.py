@@ -17,7 +17,7 @@ from easyeda2kicad.easyeda.easyeda_importer import (
 from easyeda2kicad.easyeda.parameters_easyeda import EeSymbol
 from easyeda2kicad.helpers import (
     add_component_in_symbol_lib_file,
-    get_local_config,
+    get_local_config,  #  noqa: F401  # Load the config file early
     id_already_in_symbol_lib,
     set_logger,
     update_component_in_symbol_lib_file,
@@ -29,7 +29,6 @@ from easyeda2kicad.kicad.parameters_kicad_symbol import KicadVersion
 
 
 def get_parser() -> argparse.ArgumentParser:
-
     parser = argparse.ArgumentParser(
         description=(
             "A Python script that convert any electronic components from LCSC or"
@@ -108,7 +107,6 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def valid_arguments(arguments: dict) -> bool:
-
     if not arguments["lcsc_id"].startswith("C"):
         logging.error("lcsc_id should start by C....")
         return False

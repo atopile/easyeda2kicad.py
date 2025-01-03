@@ -5,10 +5,9 @@ import math
 import os
 import re
 from datetime import datetime
-from glob import escape
 
 from easyeda2kicad import __version__
-from easyeda2kicad.kicad.parameters_kicad_symbol import KicadVersion, sanitize_fields
+from easyeda2kicad.kicad.parameters_kicad_symbol import KicadVersion
 
 sym_lib_regex_pattern = {
     "v5": r"(#\n# {component_name}\n#\n.*?ENDDEF\n)",
@@ -18,7 +17,6 @@ sym_lib_regex_pattern = {
 
 
 def set_logger(log_file: str, log_level: int) -> None:
-
     root_log = logging.getLogger()
     root_log.setLevel(log_level)
 
@@ -93,7 +91,6 @@ def update_component_in_symbol_lib_file(
 def add_component_in_symbol_lib_file(
     lib_path: str, component_content: str, kicad_version: KicadVersion
 ) -> None:
-
     if kicad_version == KicadVersion.v5:
         with open(file=lib_path, mode="a+", encoding="utf-8") as lib_file:
             lib_file.write(component_content)

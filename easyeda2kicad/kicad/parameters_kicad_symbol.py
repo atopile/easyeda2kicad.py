@@ -174,8 +174,7 @@ class KiSymbolInfo:
         if self.package:
             field_offset_y += KiExportConfigV5.FIELD_OFFSET_INCREMENT.value
             header.append(
-                'F2 "{footprint}" {x} {y} {font_size} H I {text_justification} CNN'
-                .format(
+                'F2 "{footprint}" {x} {y} {font_size} H I {text_justification} CNN'.format(
                     footprint=self.package,
                     x=0,
                     y=self.y_low - field_offset_y,
@@ -186,8 +185,7 @@ class KiSymbolInfo:
         if self.datasheet:
             field_offset_y += KiExportConfigV5.FIELD_OFFSET_INCREMENT.value
             header.append(
-                'F3 "{datasheet}" {x} {y} {font_size} H I {text_justification} CNN'
-                .format(
+                'F3 "{datasheet}" {x} {y} {font_size} H I {text_justification} CNN'.format(
                     datasheet=self.datasheet,
                     x=0,
                     y=self.y_low - field_offset_y,
@@ -328,7 +326,6 @@ class KiSymbolPin:
     pos_y: Union[int, float]
 
     def export_v5(self) -> str:
-
         return (
             "X {name} {num} {x} {y} {length:.0f} {orientation} {num_sz} {name_sz}"
             " {unit_num} 1 {pin_type} {pin_style}\n".format(
@@ -339,9 +336,11 @@ class KiSymbolPin:
                 x=self.pos_x,
                 y=self.pos_y,
                 length=self.length,
-                orientation=ki_pin_orientation_v5_format[f"{self.orientation}"]
-                if f"{self.orientation}" in ki_pin_orientation_v5_format
-                else ki_pin_orientation_v5_format["0"],
+                orientation=(
+                    ki_pin_orientation_v5_format[f"{self.orientation}"]
+                    if f"{self.orientation}" in ki_pin_orientation_v5_format
+                    else ki_pin_orientation_v5_format["0"]
+                ),
                 num_sz=KiExportConfigV5.PIN_NUM_SIZE.value,
                 name_sz=KiExportConfigV5.PIN_NAME_SIZE.value,
                 unit_num=1,
@@ -358,9 +357,9 @@ class KiSymbolPin:
               (name "{pin_name}" (effects (font (size {name_size} {name_size}))))
               (number "{pin_num}" (effects (font (size {num_size} {num_size}))))
             )""".format(
-            pin_type=self.type.name[1:]
-            if self.type.name.startswith("_")
-            else self.type.name,
+            pin_type=(
+                self.type.name[1:] if self.type.name.startswith("_") else self.type.name
+            ),
             pin_style=self.style.name,
             x=self.pos_x,
             y=self.pos_y,
@@ -385,17 +384,14 @@ class KiSymbolRectangle:
     pos_y1: Union[int, float] = 0
 
     def export_v5(self) -> str:
-        return (
-            "S {x0:.0f} {y0:.0f} {x1:.0f} {y1:.0f} {unit_num} 1 {line_width} {fill}\n"
-            .format(
-                x0=self.pos_x0,
-                y0=self.pos_y0,
-                x1=self.pos_x1,
-                y1=self.pos_y1,
-                unit_num=1,
-                line_width=KiExportConfigV5.DEFAULT_BOX_LINE_WIDTH.value,
-                fill=ki_box_fill_v5_format[KiBoxFill.background],
-            )
+        return "S {x0:.0f} {y0:.0f} {x1:.0f} {y1:.0f} {unit_num} 1 {line_width} {fill}\n".format(
+            x0=self.pos_x0,
+            y0=self.pos_y0,
+            x1=self.pos_x1,
+            y1=self.pos_y1,
+            unit_num=1,
+            line_width=KiExportConfigV5.DEFAULT_BOX_LINE_WIDTH.value,
+            fill=ki_box_fill_v5_format[KiBoxFill.background],
         )
 
     def export_v6(self) -> str:
@@ -431,9 +427,11 @@ class KiSymbolPolygon:
                 coordinate=" ".join(
                     map(str, list(itertools.chain.from_iterable(self.points)))
                 ),
-                fill=ki_box_fill_v5_format[KiBoxFill.background]
-                if self.is_closed
-                else ki_box_fill_v5_format[KiBoxFill.none],
+                fill=(
+                    ki_box_fill_v5_format[KiBoxFill.background]
+                    if self.is_closed
+                    else ki_box_fill_v5_format[KiBoxFill.none]
+                ),
             )
         )
 
@@ -463,18 +461,17 @@ class KiSymbolCircle:
     background_filling: bool = False
 
     def export_v5(self) -> str:
-        return (
-            "C {pos_x:.0f} {pos_y:.0f} {radius:.0f} {unit_num} 1 {line_width} {fill}\n"
-            .format(
-                pos_x=self.pos_x,
-                pos_y=self.pos_y,
-                radius=int(self.radius),
-                unit_num=1,
-                line_width=KiExportConfigV5.DEFAULT_BOX_LINE_WIDTH.value,
-                fill=ki_box_fill_v5_format[KiBoxFill.background]
+        return "C {pos_x:.0f} {pos_y:.0f} {radius:.0f} {unit_num} 1 {line_width} {fill}\n".format(
+            pos_x=self.pos_x,
+            pos_y=self.pos_y,
+            radius=int(self.radius),
+            unit_num=1,
+            line_width=KiExportConfigV5.DEFAULT_BOX_LINE_WIDTH.value,
+            fill=(
+                ki_box_fill_v5_format[KiBoxFill.background]
                 if self.background_filling
-                else ki_box_fill_v5_format[KiBoxFill.none],
-            )
+                else ki_box_fill_v5_format[KiBoxFill.none]
+            ),
         )
 
     def export_v6(self) -> str:
@@ -489,9 +486,11 @@ class KiSymbolCircle:
             pos_y=self.pos_y,
             radius=self.radius,
             line_width=KiExportConfigV6.DEFAULT_BOX_LINE_WIDTH.value,
-            fill=KiBoxFill.background.name
-            if self.background_filling
-            else KiBoxFill.none.name,
+            fill=(
+                KiBoxFill.background.name
+                if self.background_filling
+                else KiBoxFill.none.name
+            ),
         )
 
 
@@ -522,9 +521,11 @@ class KiSymbolArc:
                 angle_end=self.angle_end * 10,
                 unit_num=1,
                 line_width=KiExportConfigV5.DEFAULT_BOX_LINE_WIDTH.value,
-                fill=ki_box_fill_v5_format[KiBoxFill.background]
-                if self.angle_start == self.angle_end
-                else ki_box_fill_v5_format[KiBoxFill.none],
+                fill=(
+                    ki_box_fill_v5_format[KiBoxFill.background]
+                    if self.angle_start == self.angle_end
+                    else ki_box_fill_v5_format[KiBoxFill.none]
+                ),
                 start_x=self.start_x,
                 start_y=self.start_y,
                 end_x=self.end_x,
@@ -548,9 +549,11 @@ class KiSymbolArc:
             end_x=self.end_x,
             end_y=self.end_y,
             line_width=KiExportConfigV6.DEFAULT_BOX_LINE_WIDTH.value,
-            fill=KiBoxFill.background.name
-            if self.angle_start == self.angle_end
-            else KiBoxFill.none.name,
+            fill=(
+                KiBoxFill.background.name
+                if self.angle_start == self.angle_end
+                else KiBoxFill.none.name
+            ),
         )
 
 
@@ -570,9 +573,11 @@ class KiSymbolBezier:
                 coordinate=" ".join(
                     map(str, list(itertools.chain.from_iterable(self.points)))
                 ),
-                fill=ki_box_fill_v5_format[KiBoxFill.background]
-                if self.is_closed
-                else ki_box_fill_v5_format[KiBoxFill.none],
+                fill=(
+                    ki_box_fill_v5_format[KiBoxFill.background]
+                    if self.is_closed
+                    else ki_box_fill_v5_format[KiBoxFill.none]
+                ),
             )
         )
 
@@ -635,7 +640,7 @@ class KiSymbolUnit:
                 {graphic_items}
                 {pins}
               )"""
-                ),
+            ),
             "  " * 2,
         ).format(
             library_id=unit_library_id,
@@ -644,6 +649,7 @@ class KiSymbolUnit:
             ),
             pins=textwrap.indent(textwrap.dedent("".join(unit_pins)), "  " * 3),
         )
+
 
 @dataclass
 class KiSymbol:
@@ -667,9 +673,7 @@ class KiSymbol:
                     getattr(sub_symbol, f"export_v{kicad_version}")()
                 )
         else:
-            sym_export_data["info"] = getattr(
-                self.info, f"export_v{kicad_version}"
-            )()
+            sym_export_data["info"] = getattr(self.info, f"export_v{kicad_version}")()
 
         return sym_export_data
 
@@ -677,8 +681,12 @@ class KiSymbol:
         sym_export_data = self.export_handler(kicad_version="5")
         sym_info = sym_export_data.pop("info")
         if len(self.units) > 1:
-            print("multiple units not supported for v5, only the first will be exported")
-        sym_graphic_items = itertools.chain.from_iterable(self.units[0].export_handler(kicad_version="5").values())
+            print(
+                "multiple units not supported for v5, only the first will be exported"
+            )
+        sym_graphic_items = itertools.chain.from_iterable(
+            self.units[0].export_handler(kicad_version="5").values()
+        )
 
         return (
             "#\n#"

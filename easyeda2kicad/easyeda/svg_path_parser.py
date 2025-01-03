@@ -1,11 +1,8 @@
 # Global imports
 import logging
 import re
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import List, Union
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 
 class SvgPathMoveTo(BaseModel):
@@ -56,7 +53,11 @@ def parse_svg_path(svg_path: str) -> list:
             parsed_path.extend(
                 cmd_class(
                     **dict(
-                        zip(cmd_class.__fields__, arguments[i : i + cmd_nb_arguments])
+                        zip(
+                            cmd_class.__fields__,
+                            arguments[i : i + cmd_nb_arguments],
+                            strict=False,
+                        )
                     )
                 )
                 for i in range(0, len(arguments), cmd_nb_arguments or 1)

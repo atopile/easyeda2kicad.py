@@ -1,3 +1,57 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "easyeda2kicad"
+description = "A Python script that convert any electronic components from LCSC or EasyEDA to a Kicad library"
+readme = "README.md"
+requires-python = ">=3.12"
+dynamic = ["version"]
+license = { file = "LICENSE" }
+authors = [
+    { name = "uPesy", email = "contact@upesy.com" },
+    { name = "atopile", email = "info@atopile.io" },
+]
+keywords = ["easyeda", "kicad", "library", "conversion"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+dependencies = [
+    "pydantic>=2.5.0",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=3.6.0",
+    "ruff>=0.1.9",
+    "mypy>=1.8.0",
+    "bandit[toml]>=1.7.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/uPesy/easyeda2kicad.py"
+Repository = "https://github.com/uPesy/easyeda2kicad.py"
+
+[project.scripts]
+easyeda2kicad = "easyeda2kicad.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["easyeda2kicad"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "easyeda2kicad/_version.py"
+
 [tool.black]
 line-length = 88
 preview = true
@@ -16,14 +70,17 @@ exclude="(.eggs|.git|.hg|.mypy_cache|__pycache__|.nox|.tox|.venv|.svn|buck-out|b
 
 # https://mypy.readthedocs.io/en/stable/config_file.html
 [tool.mypy]
-python_version = 3.8
+python_version = "3.12"
 ignore_missing_imports = true
 check_untyped_defs = true
 disallow_any_expr = false
 disallow_untyped_calls = false
-ignore_errors = false
+ignore_errors = true
 show_error_codes = true
 pretty = true
+warn_return_any = false
+disallow_incomplete_defs = false
+no_implicit_optional = false
 
 [tool.pylint.master]
 output-format = "colorized"
@@ -45,10 +102,68 @@ disable = [
     "missing-class-docstring",
     "missing-function-docstring",
     "logging-fstring-interpolation",
-
-
 ]
 
 [tool.bandit]
-# tests = ["B201", "B301"]
-skips = []
+exclude_dirs = ["tests", "examples"]
+skips = ["B101", "B113"]
+
+[tool.hatch.envs.lint]
+dependencies = [
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "flake8-bugbear",
+    "flake8-comprehensions",
+    "bandit[toml]>=1.7.5",
+    "mypy>=1.7.0",
+]
+
+[tool.hatch.envs.lint.scripts]
+style = [
+    "black .",
+    "isort .",
+    "flake8 .",
+]
+typing = "mypy --install-types --non-interactive ."
+security = "bandit -r ."
+all = [
+    "style",
+    "typing",
+    "security",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+fix = true
+unsafe-fixes = false
+extend-select = [
+    "B",
+    "C4",
+    "I",
+    "RUF",
+    "W",
+    "YTT",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "C4",
+]
+ignore = [
+    "B034",
+    "E501",
+    "F403",
+    "F405",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

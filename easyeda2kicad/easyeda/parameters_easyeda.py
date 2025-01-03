@@ -291,6 +291,7 @@ class EeSymbolInfo:
     lcsc_id: str = ""
     jlc_id: str = ""
 
+
 @dataclass
 class EeSymbolUnit:
     bbox: EeSymbolBbox
@@ -302,6 +303,7 @@ class EeSymbolUnit:
     polylines: List[EeSymbolPolyline] = field(default_factory=list)
     polygons: List[EeSymbolPolygon] = field(default_factory=list)
     paths: List[EeSymbolPath] = field(default_factory=list)
+
 
 @dataclass
 class EeSymbol:
@@ -318,7 +320,6 @@ def convert_to_mm(dim: float) -> float:
 
 @dataclass
 class EeFootprintBbox:
-
     x: float
     y: float
 
@@ -510,7 +511,6 @@ class EeFootprintText(BaseModel):
         return 0.0 if field == "" else field
 
     def convert_to_mm(self):
-
         self.center_x = convert_to_mm(self.center_x)
         self.center_y = convert_to_mm(self.center_y)
         self.stroke_width = convert_to_mm(self.stroke_width)
