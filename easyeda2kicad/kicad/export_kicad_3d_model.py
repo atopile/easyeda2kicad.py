@@ -17,7 +17,6 @@ VRML_HEADER = """#VRML V2.0 utf8
 
 
 def get_materials(obj_data: str) -> dict:
-
     material_regex = "newmtl .*?endmtl"
     matchs = re.findall(pattern=material_regex, string=obj_data, flags=re.DOTALL)
 
