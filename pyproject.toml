@@ -31,9 +31,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pre-commit>=3.6.0",
-    "ruff>=0.1.9",
-    "mypy>=1.8.0",
-    "bandit[toml]>=1.7.6",
+    "ruff>=0.8.4",
+    "mypy>=1.14.1",
 ]
 
 [project.urls]
@@ -52,22 +51,6 @@ source = "vcs"
 [tool.hatch.build.hooks.vcs]
 version-file = "easyeda2kicad/_version.py"
 
-[tool.black]
-line-length = 88
-preview = true
-
-[tool.isort]
-profile = "black"
-extend_skip = [".md", ".json", ".po", ".mo",".html", ".js", ".css", ".rst"]
-skip_glob = ["env/*"]
-known_local_folder = ["core"]
-import_heading_stdlib="Global imports"
-import_heading_localfolder="Local imports"
-
-[tool.pycln]
-include=".*\\.py$"
-exclude="(.eggs|.git|.hg|.mypy_cache|__pycache__|.nox|.tox|.venv|.svn|buck-out|build|dist|env|)/"
-
 # https://mypy.readthedocs.io/en/stable/config_file.html
 [tool.mypy]
 python_version = "3.12"
@@ -82,70 +65,11 @@ warn_return_any = false
 disallow_incomplete_defs = false
 no_implicit_optional = false
 
-[tool.pylint.master]
-output-format = "colorized"
-extension-pkg-whitelist = [
-    "pydantic"
-]
-ignore="(.eggs|.git|.hg|.mypy_cache|__pycache__|.nox|.tox|.venv|.svn|buck-out|build|dist|env|)/"
-
-[tool.pylint.format]
-max-line-length = 88
-
-[tool.pylint.messages_control]
-disable = [
-    "wrong-import-order",
-    "method-hidden",
-    "too-many-lines",
-    "wildcard-import",
-    "missing-module-docstring",
-    "missing-class-docstring",
-    "missing-function-docstring",
-    "logging-fstring-interpolation",
-]
-
-[tool.bandit]
-exclude_dirs = ["tests", "examples"]
-skips = ["B101", "B113"]
-
-[tool.hatch.envs.lint]
-dependencies = [
-    "black>=23.0.0",
-    "isort>=5.12.0",
-    "flake8>=6.1.0",
-    "flake8-bugbear",
-    "flake8-comprehensions",
-    "bandit[toml]>=1.7.5",
-    "mypy>=1.7.0",
-]
-
-[tool.hatch.envs.lint.scripts]
-style = [
-    "black .",
-    "isort .",
-    "flake8 .",
-]
-typing = "mypy --install-types --non-interactive ."
-security = "bandit -r ."
-all = [
-    "style",
-    "typing",
-    "security",
-]
-
 [tool.ruff]
 line-length = 88
 target-version = "py312"
 fix = true
 unsafe-fixes = false
-extend-select = [
-    "B",
-    "C4",
-    "I",
-    "RUF",
-    "W",
-    "YTT",
-]
 
 [tool.ruff.lint]
 select = [
@@ -154,6 +78,14 @@ select = [
     "I",
     "B",
     "C4",
+]
+extend-select = [
+    "B",
+    "C4",
+    "I",
+    "RUF",
+    "W",
+    "YTT",
 ]
 ignore = [
     "B034",

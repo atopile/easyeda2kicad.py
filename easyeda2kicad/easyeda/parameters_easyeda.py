@@ -248,8 +248,7 @@ class EeSymbolPolyline(BaseModel):
 
 
 # ---------------- POLYGON ----------------
-class EeSymbolPolygon(EeSymbolPolyline):
-    ...
+class EeSymbolPolygon(EeSymbolPolyline): ...
 
 
 # ---------------- PATH ----------------
