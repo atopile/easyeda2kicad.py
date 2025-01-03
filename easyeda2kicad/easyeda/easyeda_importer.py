@@ -165,7 +165,7 @@ class EasyedaSymbolImporter:
             ),
         )
 
-        if "subparts" in ee_data and ee_data["subparts"]:
+        if ee_data.get("subparts"):
             for unit in ee_data["subparts"]:
                 new_ee_unit = EeSymbolUnit(
                     bbox=EeSymbolBbox(
