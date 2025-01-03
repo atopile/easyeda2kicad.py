@@ -1,0 +1,24 @@
+name: pre-commit
+
+on:
+  push:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: '0.5.5'
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
+    - name: Run pre-commit
+      run: uv tool run pre-commit run --all-files
+
+    - name: Fail on diff after pre-commit is run
+      run: git diff --exit-code
