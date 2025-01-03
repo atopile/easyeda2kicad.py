@@ -22,7 +22,7 @@ jobs:
         python-version-file: 'pyproject.toml'
 
     - name: Run pre-commit
-      run: uv run pre-commit run --all-files
+      run: uv run --dev pre-commit run --all-files
 
     - name: Fail on diff after pre-commit is run
       run: git diff --exit-code
