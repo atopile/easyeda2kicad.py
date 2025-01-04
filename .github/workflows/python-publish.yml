@@ -13,6 +13,7 @@ jobs:
       contents: read
       id-token: write
       security-events: write
+      attestations: write
 
     steps:
     - uses: actions/checkout@v4
