@@ -85,8 +85,8 @@ def generate_wrl_model(model_3d: Ee3dModel) -> Ki3dModel:
             Shape{{
                 appearance Appearance {{
                     material  Material 	{{
-                        diffuseColor {' '.join(material['diffuse_color'])}
-                        specularColor {' '.join(material['specular_color'])}
+                        diffuseColor {" ".join(material["diffuse_color"])}
+                        specularColor {" ".join(material["specular_color"])}
                         ambientIntensity 0.2
                         transparency 0
                         shininess 0.5
@@ -132,7 +132,7 @@ class Exporter3dModelKicad:
                 encoding="utf-8",
             ) as my_lib:
                 my_lib.write(self.output.raw_wrl)
-        if self.output_step:
+        if self.output and self.output_step:
             with open(
                 file=f"{lib_path}.3dshapes/{self.output.name}.step",
                 mode="wb",
