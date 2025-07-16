@@ -1,7 +1,7 @@
 # Global imports
 import logging
-from math import acos, cos, isnan, pi, sin, sqrt
 import re
+from math import acos, cos, isnan, pi, sin, sqrt
 from typing import Tuple, Union
 
 from easyeda2kicad.easyeda.parameters_easyeda import ee_footprint
@@ -136,9 +136,9 @@ def drill_to_ki(
         max_distance = max(pos_0, pos_90)
 
         if max_distance == pos_0:
-            return f"(drill oval {hole_radius*2} {hole_length})"
+            return f"(drill oval {hole_radius * 2} {hole_length})"
         else:
-            return f"(drill oval {hole_length} {hole_radius*2})"
+            return f"(drill oval {hole_length} {hole_radius * 2})"
     if hole_radius > 0:
         return f"(drill {2 * hole_radius})"
     return ""
