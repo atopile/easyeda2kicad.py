@@ -1,5 +1,6 @@
 # Global imports
 import logging
+import re
 from math import acos, cos, isnan, pi, sin, sqrt
 from typing import Tuple, Union
 
@@ -135,9 +136,9 @@ def drill_to_ki(
         max_distance = max(pos_0, pos_90)
 
         if max_distance == pos_0:
-            return f"(drill oval {hole_radius*2} {hole_length})"
+            return f"(drill oval {hole_radius * 2} {hole_length})"
         else:
-            return f"(drill oval {hole_length} {hole_radius*2})"
+            return f"(drill oval {hole_length} {hole_radius * 2})"
     if hole_radius > 0:
         return f"(drill {2 * hole_radius})"
     return ""
@@ -254,7 +255,9 @@ class ExporterFootprintKicad:
 
             # For custom polygon
             is_custom_shape = ki_pad.shape == "custom"
-            point_list = [fp_to_ki(point) for point in ee_pad.points.split(" ")]
+            point_list = [
+                fp_to_ki(point) for point in re.findall(r"\S+", ee_pad.points)
+            ]
             if is_custom_shape:
                 if len(point_list) <= 0:
                     logging.warning(
@@ -299,7 +302,9 @@ class ExporterFootprintKicad:
             )
 
             # Generate line
-            point_list = [fp_to_ki(point) for point in ee_track.points.split(" ")]
+            point_list = [
+                fp_to_ki(point) for point in re.findall(r"\S+", ee_track.points)
+            ]
             for i in range(0, len(point_list) - 2, 2):
                 ki_track.points_start_x.append(
                     round(point_list[i] - self.input.bbox.x, 2)

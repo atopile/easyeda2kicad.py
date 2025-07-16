@@ -209,7 +209,7 @@ def convert_ee_polylines(
     to_ki: Callable = px_to_mil if kicad_version == KicadVersion.v5 else px_to_mm
     kicad_polygons = []
     for ee_polyline in ee_polylines:
-        raw_pts = ee_polyline.points.split(" ")
+        raw_pts = re.findall(r"\S+", ee_polyline.points)
         # print(raw_pts)
         x_points = [
             to_ki(int(float(raw_pts[i])) - int(ee_bbox.x))
@@ -258,7 +258,7 @@ def convert_ee_paths(
     to_ki: Callable = px_to_mil if kicad_version == KicadVersion.v5 else px_to_mm
 
     for ee_path in ee_paths:
-        raw_pts = ee_path.paths.split(" ")
+        raw_pts = re.findall(r"\S+", ee_path.paths)
 
         x_points = []
         y_points = []
