@@ -1,7 +1,9 @@
 # Global imports
 import logging
+import ssl
 
-import requests
+import httpx
+import truststore
 
 from easyeda2kicad import __version__
 
@@ -22,8 +24,14 @@ class EasyedaApi:
             "User-Agent": f"easyeda2kicad v{__version__}",
         }
 
+        self._ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+
     def get_info_from_easyeda_api(self, lcsc_id: str) -> dict:
-        r = requests.get(url=API_ENDPOINT.format(lcsc_id=lcsc_id), headers=self.headers)
+        with httpx.Client(verify=self._ssl_context) as client:
+            r = client.get(
+                url=API_ENDPOINT.format(lcsc_id=lcsc_id), headers=self.headers
+            )
+
         api_response = r.json()
 
         if not api_response or (
@@ -41,21 +49,31 @@ class EasyedaApi:
         return cp_cad_info["result"]
 
     def get_raw_3d_model_obj(self, uuid: str) -> str:
-        r = requests.get(
-            url=ENDPOINT_3D_MODEL.format(uuid=uuid),
-            headers={"User-Agent": self.headers["User-Agent"]},
-        )
-        if r.status_code != requests.codes.ok:
+        with httpx.Client(verify=self._ssl_context) as client:
+            r = client.get(
+                url=ENDPOINT_3D_MODEL.format(uuid=uuid),
+                headers={"User-Agent": self.headers["User-Agent"]},
+            )
+
+        try:
+            r.raise_for_status()
+        except httpx.HTTPStatusError:
             logging.error(f"No raw 3D model data found for uuid:{uuid} on easyeda")
             return None
+
         return r.content.decode()
 
     def get_step_3d_model(self, uuid: str) -> bytes:
-        r = requests.get(
-            url=ENDPOINT_3D_MODEL_STEP.format(uuid=uuid),
-            headers={"User-Agent": self.headers["User-Agent"]},
-        )
-        if r.status_code != requests.codes.ok:
+        with httpx.Client(verify=self._ssl_context) as client:
+            r = client.get(
+                url=ENDPOINT_3D_MODEL_STEP.format(uuid=uuid),
+                headers={"User-Agent": self.headers["User-Agent"]},
+            )
+
+        try:
+            r.raise_for_status()
+        except httpx.HTTPStatusError:
             logging.error(f"No step 3D model data found for uuid:{uuid} on easyeda")
             return None
+
         return r.content
