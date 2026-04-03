@@ -27,6 +27,7 @@ dependencies = [
     "httpx>=0.28.1",
     "pydantic>=2.5.0",
     "truststore>=0.10.4",
+    "fake-useragent>=2.0.3",
 ]
 
 [project.optional-dependencies]

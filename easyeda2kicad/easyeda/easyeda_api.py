@@ -4,6 +4,7 @@ import ssl
 
 import httpx
 import truststore
+from fake_useragent import UserAgent
 
 
 API_ENDPOINT = "https://easyeda.com/api/products/{lcsc_id}/components?version=6.4.19.5"
@@ -20,7 +21,7 @@ class EasyedaApi:
             "Accept-Encoding": "gzip, deflate",
             "Accept": "application/json, text/javascript, */*; q=0.01",
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+            "User-Agent": UserAgent(platforms='desktop').random,
         }
 
         self._ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
