@@ -5,7 +5,6 @@ import ssl
 import httpx
 import truststore
 
-from easyeda2kicad import __version__
 
 API_ENDPOINT = "https://easyeda.com/api/products/{lcsc_id}/components?version=6.4.19.5"
 ENDPOINT_3D_MODEL = "https://modules.easyeda.com/3dmodel/{uuid}"
@@ -21,7 +20,7 @@ class EasyedaApi:
             "Accept-Encoding": "gzip, deflate",
             "Accept": "application/json, text/javascript, */*; q=0.01",
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            "User-Agent": f"easyeda2kicad v{__version__}",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
         }
 
         self._ssl_context = truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
